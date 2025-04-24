@@ -77,12 +77,14 @@ def clean_uid(uid):
     return re.sub(r'[^a-z0-9\-]', '', uid.lower())
 
 def parse_event(vevent):
-    raw_uid = re.search(r"UID:(.+)", vevent).group(1).strip()
-    uid = clean_uid(raw_uid)
+    uid = clean_uid(re.search(r"UID:(.+)", vevent).group(1).strip())
     summary = re.search(r"SUMMARY:(.+)", vevent).group(1).strip()
-
     dtstart_raw = re.search(r"DTSTART(?:;TZID=[^:]+)?:([0-9T]+)", vevent).group(1)
     dtend_raw = re.search(r"DTEND(?:;TZID=[^:]+)?:([0-9T]+)", vevent).group(1)
+
+    # 📍 LOCATION 파싱 (없을 수 있으니 예외처리)
+    location_match = re.search(r"LOCATION:(.+)", vevent)
+    location = location_match.group(1).strip() if location_match else ""
 
     def format_datetime(dt_str):
         if "T" in dt_str:
@@ -94,6 +96,7 @@ def parse_event(vevent):
     return {
         'id': uid,
         'summary': summary,
+        'location': location,  # ← ✅ 추가됨!
         'start': {'dateTime': format_datetime(dtstart_raw) + "+09:00", 'timeZone': 'Asia/Seoul'},
         'end': {'dateTime': format_datetime(dtend_raw) + "+09:00", 'timeZone': 'Asia/Seoul'}
     }
