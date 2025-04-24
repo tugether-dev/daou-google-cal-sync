@@ -1,0 +1,35 @@
+name: Sync CalDAV to Google Calendar
+
+on:
+  schedule:
+    - cron: '*/10 22-23 * * *'   # 07:00~09:50 KST (22~23 UTC)
+    - cron: '*/10 0-13 * * *'    # 10:00~19:50 KST (0~13 UTC)
+  workflow_dispatch:  # 수동 실행도 가능하게
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.9'
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Run sync script
+        env:
+          GOOGLE_CREDS: ${{ secrets.GOOGLE_CREDS }}
+          GOOGLE_TOKEN: ${{ secrets.GOOGLE_TOKEN }}
+          GOOGLE_CALENDAR_ID: ${{ secrets.GOOGLE_CALENDAR_ID }}
+          CALDAV_URL: ${{ secrets.CALDAV_URL }}
+          CALDAV_USER: ${{ secrets.CALDAV_USER }}
+          CALDAV_PASS: ${{ secrets.CALDAV_PASS }}
+        run: python sync.py
