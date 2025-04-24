@@ -71,6 +71,7 @@ def fetch_caldav_events():
         matches = re.findall(r"BEGIN:VEVENT.*?END:VEVENT", cdata.text, re.DOTALL)
         vevents.extend(matches)
 
+
     return vevents
 
 def clean_uid(uid):
