@@ -1,6 +1,6 @@
 # 🗕️ DaouOffice CalDAV → Google Calendar 자동 동기화
 
-DaouOffice의 CalDAV 캔더 데이터를 가져와,  구구 캔더에 **2가지 전 ~ 2가지 후 일정**만 자동으로 **등록, 수정, 삭제 동기화**하는 Python 스크립트입니다.
+DaouOffice의 CalDAV 캔더 데이터를 가져와,  구글 캔더에 **2가지 전 ~ 2가지 후 일정**만 자동으로 **등록, 수정, 삭제 동기화**하는 Python 스크립트입니다.
 
 ---
 
@@ -55,8 +55,8 @@ pip install -r requirements.txt
 4. **.env 파일 생성**
 
 ```plaintext
-GOOGLE_CREDS={구구 OAuth 클라이언트 서비스 정보}
-GOOGLE_TOKEN={구구 인증 토큰}
+GOOGLE_CREDS={구글 OAuth 클라이언트 서비스 정보}
+GOOGLE_TOKEN={구글 인증 토큰}
 GOOGLE_CALENDAR_ID={가져올 Google Calendar ID}
 CALDAV_URL={다우오피스 CalDAV URL}
 CALDAV_USER={다우오피스 로그인 ID}
@@ -84,7 +84,7 @@ python sync.py
 
 ## 📝 주의사항
 
-- 겔더 동기화 범위는 "오늘 기준 ± \xb12가지" 입니다.
+- 동기화 범위는 "오늘 기준 ± \xb12가지" 입니다.
 - 다우오피스 CalDAV 일정에 참석자(ATTENDEE) 정보는 동기화하지 않습니다.
 - 등록, 수정, 삭제 모두 `event id (UID)` 기준으로 그룹합니다.
 - Google Calendar API 사용량은 현재 무료 한도 내역 (2025년 4월 기준)
